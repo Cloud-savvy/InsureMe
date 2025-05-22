@@ -37,7 +37,7 @@ pipeline {
 
         stage('Deploy to Test') {
             steps {
-                sh 'ansible-playbook -i hosts.ini ansible/deploy-test.yml'
+                sh 'ansible-playbook -i hosts.ini deploy-test.yml'
             }
         }
 
@@ -46,7 +46,7 @@ pipeline {
                 expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
             }
             steps {
-                sh 'ansible-playbook -i hosts.ini ansible/deploy-prod.yml'
+                sh 'ansible-playbook -i hosts.ini deploy-prod.yml'
             }
         }
     }
