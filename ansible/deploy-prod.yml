@@ -2,16 +2,24 @@
   hosts: prod
   become: yes
   tasks:
-    - name: Stop running container if exists
-      shell: docker stop insurance-app-prod || true
-      ignore_errors: yes
+    - name: Ensure insurance-app-prod container is absent
+      docker_container:
+        name: insurance-app-prod
+        state: absent
+        force_kill: yes
 
-    - name: Remove existing container if exists
-      shell: docker rm insurance-app-prod || true
-      ignore_errors: yes
+    - name: Pull latest Docker image for prod
+      docker_image:
+        name: bromaaascripts/insurance-app
+        tag: latest
+        source: pull
 
-    - name: Pull latest Docker image
-      shell: docker pull bromaaascripts/insurance-app:latest
+    - name: Run insurance-app-prod container
+      docker_container:
+        name: insurance-app-prod
+        image: bromaaascripts/insurance-app:latest
+        state: started
+        restart_policy: always
+        published_ports:
+          - "8081:8082"
 
-    - name: Run container
-      shell: docker run -d -p 8081:8082 --name insurance-app-prod bromaaascripts/insurance-app:latest
