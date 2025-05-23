@@ -3,11 +3,11 @@
   become: yes
   tasks:  
     - name: Stop running container if exists
-      shell: docker stop insurance-app-test || true
+      shell: docker stop insurance-app || true
       ignore_errors: yes
 
     - name: Remove existing container if exists
-      shell: docker rm insurance-app-test || true
+      shell: docker rm insurance-app || true
       ignore_errors: yes
       when: false
 
@@ -15,4 +15,4 @@
       shell: docker pull bromaaascripts/insurance-app:latest
 
     - name: Run container
-      shell: docker run -d -p 8084:8081 --name insurance-app-test bromaaascripts/insurance-app:latest
+      shell: docker run -d -p 8084:8081 --name insurance-app bromaaascripts/insurance-app:latest
