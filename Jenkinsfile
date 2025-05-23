@@ -37,7 +37,7 @@ pipeline {
 
         stage('Deploy to ansible-worker') {
             steps {
-                sh 'ansible all_servers -m ping'
+                sh 'ansible-playbook -i hosts.ini ansible-playbook.yml'
             }
         }
     }
