@@ -35,18 +35,9 @@ pipeline {
             }
         }
 
-        stage('Deploy to Test') {
+        stage('Deploy to ansible-worker') {
             steps {
-                sh 'ansible-playbook -i hosts.ini ansible/deploy-test.yml'
-            }
-        }
-
-        stage('Deploy to Prod') {
-            when {
-                expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
-            }
-            steps {
-                sh 'ansible-playbook -i hosts.ini ansible/deploy-prod.yml'
+                sh 'ansible-playbook -i hosts.ini ansible-playbook.yml'
             }
         }
     }
