@@ -1,8 +1,17 @@
 - name: Deploy Insurance
   hosts: ansible-host
   become: yes
-  tasks:  
-    - name: Stop and remove existing container if exists
+  tasks:
+    - name: Check if any container is using port 8084
+      shell: |
+        container_id=$(docker ps --filter "publish=8084" --format "{{.ID}}")
+        if [ ! -z "$container_id" ]; then
+          docker rm -f $container_id
+        fi
+      changed_when: false
+      ignore_errors: yes
+
+    - name: Remove old container if exists
       shell: docker rm -f insurance-app || true
 
     - name: Pull latest Docker image
@@ -10,3 +19,4 @@
 
     - name: Run container
       shell: docker run -d -p 8084:8081 --name insurance-app bromaaascripts/insurance-app:latest
+
