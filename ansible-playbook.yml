@@ -1,22 +1,17 @@
-- name: Deploy Insurance
+- name: Deploy Insurance App to Test
   hosts: ansible-host
   become: yes
-  tasks:
-    - name: Check if any container is using port 8084
-      shell: |
-        container_id=$(docker ps --filter "publish=8084" --format "{{.ID}}")
-        if [ ! -z "$container_id" ]; then
-          docker rm -f $container_id
-        fi
-      changed_when: false
+  tasks:  
+    - name: Stop running container if exists
+      shell: docker stop insurance-app || true
       ignore_errors: yes
 
-    - name: Remove old container if exists
-      shell: docker rm -f insurance-app || true
+    - name: Remove existing container if exists
+      shell: docker rm insurance-app || true
+      ignore_errors: yes
 
     - name: Pull latest Docker image
       shell: docker pull bromaaascripts/insurance-app:latest
 
     - name: Run container
-      shell: docker run -d -p 8084:8081 --name insurance-app bromaaascripts/insurance-app:latest
-
+      shell: docker run -d -p 8081:8081 --name insurance-app bromaaascripts/insurance-app:latest
