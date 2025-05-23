@@ -2,14 +2,8 @@
   hosts: ansible-host
   become: yes
   tasks:  
-    - name: Stop running container if exists
-      shell: docker stop insurance-app || true
-      ignore_errors: yes
-
-    - name: Remove existing container if exists
-      shell: docker rm insurance-app || true
-      ignore_errors: yes
-      when: false
+    - name: Stop and remove existing container if exists
+      shell: docker rm -f insurance-app || true
 
     - name: Pull latest Docker image
       shell: docker pull bromaaascripts/insurance-app:latest
