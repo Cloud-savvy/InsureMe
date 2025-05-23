@@ -1,4 +1,4 @@
-- name: Deploy Insurance App to Test
+- name: Deploy Insurance
   hosts: ansible-host
   become: yes
   tasks:  
