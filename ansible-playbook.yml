@@ -15,4 +15,4 @@
       shell: docker pull bromaaascripts/insurance-app:latest
 
     - name: Run container
-      shell: docker run -d -p 8081:8081 --name insurance-app-test bromaaascripts/insurance-app:latest
+      shell: docker run -d -p 8084:8081 --name insurance-app-test bromaaascripts/insurance-app:latest
